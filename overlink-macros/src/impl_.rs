@@ -86,6 +86,22 @@ pub fn overlink(args: MockFfiArgs, mut input: syn::ItemFn) -> syn::Result<impl T
     struct ReplaceSuper(syn::Path);
 
     impl VisitMut for ReplaceSuper {
+        fn visit_expr_mut(&mut self, i: &mut syn::Expr) {
+            match i {
+                syn::Expr::Macro(syn::ExprMacro {
+                    mac: syn::Macro { path, tokens, .. },
+                    ..
+                }) if path.is_ident("super") => {
+                    let super_fn = &self.0;
+                    *i = parse_quote! {
+                        #super_fn(#tokens)
+                    };
+                }
+
+                _ => syn::visit_mut::visit_expr_mut(self, i),
+            }
+        }
+
         fn visit_expr_path_mut(&mut self, i: &mut syn::ExprPath) {
             if i.path.is_ident("super") {
                 i.path = self.0.clone();

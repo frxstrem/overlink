@@ -13,7 +13,7 @@ unsafe extern "C" fn clock_gettime(
 ) -> libc::c_int {
     println!("time inside: {:?}", SystemTime::now());
 
-    let result = super(clockid, res);
+    let result = super!(clockid, res);
 
     if result != 0 {
         return result;

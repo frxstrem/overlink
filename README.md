@@ -10,11 +10,14 @@ To override an existing C function, just use the `#[overlink]` attribute:
 ```rust
 #[overlink]
 unsafe extern fn time(arg: *mut time_t) -> time_t {
-  let result = super(arg);
+  let result = super!(arg);
   println!("time -> {result:?}");
   result
 }
 ```
+
+The `super!` macro allows you to call the original function from within the
+`#[overlink]` function.
 
 ### `name`
 
