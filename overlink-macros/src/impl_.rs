@@ -12,9 +12,15 @@ use syn::{
 
 pub fn overlink(args: MockFfiArgs, mut input: syn::ItemFn) -> syn::Result<impl ToTokens> {
     // Validate input
+    if input.sig.unsafety.is_none() {
+        return Err(syn::Error::new_spanned(
+            input.sig,
+            "#[overlink] functions must be `unsafe`",
+        ));
+    }
     if input.sig.abi.is_none() {
         return Err(syn::Error::new_spanned(
-            input.sig.fn_token,
+            input.sig,
             "#[overlink] functions must have an explicit ABI",
         ));
     }
