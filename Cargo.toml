@@ -1,0 +1,19 @@
+[workspace]
+members = ["overlink", "overlink-macros"]
+resolver = "2"
+
+[workspace.package]
+authors = ["Freyja Østrem <frx.apps@gmail.com>"]
+edition = "2021"
+license = "MIT"
+publish = false
+version = "0.1.0"
+
+[workspace.dependencies]
+overlink = { path = "./overlink", version = "0.1.0" }
+overlink-macros = { path = "./overlink-macros", version = "0.1.0" }
+
+libc = "0.2.164"
+proc-macro2 = "1.0.92"
+quote = "1.0.37"
+syn = { version = "2.0.89", features = ["full", "visit", "visit-mut"] }
